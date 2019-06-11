@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gabe's Giphy API Adventure</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    
+    <!-- HEADER -->
+  <div class="jumbotron">
+      <div class="container">
+          <h1>SWEAR TREK ULTIMATE</h1>
+      </div>
+  </div>
+
+    <!-- MAIN CONTAINER -->
+<div class="container">
+  <div id="buttons" class="btn-group inline pull-left">
+    <button enterprise-crew="swear trek kirk" class="btn btn-danger">James T. Kirk</button>
+    <button enterprise-crew="swear trek spock" class="btn btn-danger">Spock</button>
+    <button enterprise-crew="swear trek mccoy" class="btn btn-danger">Leonard McCoy</button>
+    <button enterprise-crew="swear trek picard" class="btn btn-danger">Jean-Luc Picard</button>
+    <button enterprise-crew="swear trek riker" class="btn btn-danger">William Riker</button>
+    <button enterprise-crew="swear trek data" class="btn btn-danger">Data</button>
+    <button enterprise-crew="swear trek sisko" class="btn btn-danger">Benjamin Sisko</button>
+    <div id="newButtons"></div>
+  </div>
+  
+      <!-- SUBMIT -->
+      <form class="form-inline" id="swearSearch">
+            <div class="form-group">
+              <label for="swearInput">BRIDGE TO TRANSPORTER ROOM</label>
+              <input type="text" id="swearInput">
+            </div>
+            <!-- Button triggers show to be added -->
+            <input id="addShow" type="submit" value="ONE TO BEAM UP">
+          </form>
+
+    <!-- GIF DEPOT -->
+  <div id="gifs"></div>
+
+
+
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    // Need to figure this out WITHOUT js here -- why won't the default buttons work without this? Investigate...
+$(document).ready(function() {
+    $("button").on("click", function() {
+        var character = $(this).attr("enterprise-crew");
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + character + "&api_key=JCPCf9T5YVBsQcPf2H6TMeI57cE2F2R0&limit=10";
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response) {
+            var results = response.data;
+            for (var i = 0; i < results.length; i++) {
+                var gifDiv = $("<div>");
+                var rating = results[i].rating;
+                var p = $("<p>").text("Rating: " + rating);
+                var characterImage = $("<img>");
+                characterImage.attr("src", results[i].images.fixed_height.url);
+
+                gifDiv.prepend(p);
+                gifDiv.prepend(characterImage);
+
+                $("#gifs").prepend(gifDiv);
+            }
+        });
+    });
+
+
+
+    })    
+    </script>
+    <script src="assets/javascript/app.js"></script>
+
+</body>
+</html>
